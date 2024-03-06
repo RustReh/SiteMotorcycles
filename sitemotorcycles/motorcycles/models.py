@@ -18,7 +18,9 @@ class Motorcycles(models.Model):
     photo = models.ImageField(
         upload_to="motorcyclesphoto/%Y/%m/%d/",
         default=None,
-        verbose_name='Фото мотоцикла'
+        verbose_name='Фото мотоцикла',
+        blank=True,
+        null=True,
     )
 
     slug = models.SlugField(
@@ -79,6 +81,14 @@ class KindOfMotorcycle(models.Model):
         db_index=True
     )
 
+    photo = models.ImageField(
+        upload_to="motorcyclesphoto/%Y/%m/%d/",
+        default=None,
+        verbose_name='Фото',
+        blank=True,
+        null=True,
+    )
+
     class Meta:
         verbose_name = "Класс мотоцикла"
 
@@ -99,6 +109,14 @@ class EngineType(models.Model):
         max_length=255,
         unique=True,
         db_index=True
+    )
+
+    photo = models.ImageField(
+        upload_to="motorcyclesphoto/%Y/%m/%d/",
+        default=None,
+        verbose_name='Фото',
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
@@ -132,7 +150,7 @@ class Favorite(models.Model):
 
 
 class Menu(models.Model):
-    name = models.CharField(
+    title = models.CharField(
         verbose_name='Название',
         max_length=100
     )
