@@ -49,7 +49,7 @@ class Motorcycles(models.Model):
     type = models.ForeignKey(
         'EngineType',
         on_delete=models.PROTECT,
-        # related_name='type',
+        related_name='type',
         verbose_name='Тип двигателя'
     )
 
@@ -64,8 +64,8 @@ class Motorcycles(models.Model):
         #     models.Index(fields=['time_create'])
         # ]
 
-    # def get_absolute_url(self):
-    #     return reverse('post', kwargs={'post_slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'post_slug': self.slug})
 
 
 class KindOfMotorcycle(models.Model):
@@ -95,8 +95,8 @@ class KindOfMotorcycle(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_absolute_url(self):
-    #     return reverse('kind', kwargs={'kind_slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('kind', kwargs={'kind_slug': self.slug})
 
 
 class EngineType(models.Model):
@@ -122,8 +122,8 @@ class EngineType(models.Model):
     def __str__(self):
         return self.type
 
-    # def get_absolute_url(self):
-    #     return reverse('type', kwargs={'type_slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('type', kwargs={'type_slug': self.slug})
 
 
 class Favorite(models.Model):
