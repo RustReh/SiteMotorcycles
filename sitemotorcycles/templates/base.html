@@ -8,32 +8,22 @@
 
 </head>
 <body>
-{% block menu %}
-		<div>
-			<ul>
-			<li ><a href="{% url 'home' %}"><div ></div></a></li>
-{% for m in menu %}
-	<li><a href="{% url m.url%}">{{m.title}}</a></li>
-{% endfor %}
-
-{% endblock menu %}
 
 
-<table class="table-content" border=0 cellpadding="0" cellspacing="0">
-<tr>
+
+{% show_top_menu %}
+
+
+
 <!-- Sidebar слева -->
-	<td valign="top" class="left-chapters">
-	<ul id="leftchapters">
-		{% if kind_selected == 0 %}
-		<li class="selected">Все категории</li>
-		{% else %}
-		<li><a href="{% url 'home' %}">Все категории</a></li>
-		{% endif %}
+    <ul>
+		<li><a href="{% url 'home' %}">Все классы</a></li>
+		{% show_kind %}
 
+		<li><a href="{% url 'home' %}">Все типы двигателя</a></li>
+		{% show_all_types %}
 
 	</ul>
-</td>
-<!-- Конец Sidebar'а -->
 <td >
 	<!-- Хлебные крошки -->
 	{% block breadcrumbs %}

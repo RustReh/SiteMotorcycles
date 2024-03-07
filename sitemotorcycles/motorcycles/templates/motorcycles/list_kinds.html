@@ -1,7 +1,3 @@
 {% for k in kinds %}
-{% if kind.id == kind_selected %}
-<li>{{kind.name}}</li>
-{% else %}
-<li><a href="{{ kind.get_absolute_url }}">{{kind.name}}</a></li>
-{% endif %}
+<li><a href="{{ k.get_absolute_url }}">{{k.name}}</a></li>
 {% endfor %}

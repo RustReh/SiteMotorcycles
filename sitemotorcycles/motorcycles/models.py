@@ -49,7 +49,7 @@ class Motorcycles(models.Model):
     type = models.ForeignKey(
         'EngineType',
         on_delete=models.PROTECT,
-        related_name='type',
+        related_name='types',
         verbose_name='Тип двигателя'
     )
 
@@ -119,6 +119,8 @@ class EngineType(models.Model):
         null=True,
     )
 
+    class Meta:
+        verbose_name = "Тмп двигателя"
     def __str__(self):
         return self.type
 

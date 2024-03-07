@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 
+
+
 {% block content %}
-<ul class="list-articles">
+<ul >
 	{% for p in posts %}
-			<li><div class="article-panel">
+			<li><div c>
 	<p class="first">Категория: {{p.kind.name}}</p>
     </div>
-				<h2>{{p.brand}}</h2>
+				<h2>{{p.brand}} {{ p.bike_model }}</h2>
 
-			<div class="clear"></div>
-			<p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+			<div ></div>
+			<p c><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
 			</li>
 	{% endfor %}
 </ul>

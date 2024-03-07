@@ -2,10 +2,10 @@
 
 
 {% block content %}
-<h1>{{post.title}}</h1>
+<h1>{{post.name}}</h1>
 
 {% if post.photo %}
-<p><img class="img-article-left" src="{{post.photo.url}}"></p>
+<p><img src="{{post.photo.url}}"></p>
 {% endif %}
-
+{{post.description|linebreaks}}
 {% endblock %}

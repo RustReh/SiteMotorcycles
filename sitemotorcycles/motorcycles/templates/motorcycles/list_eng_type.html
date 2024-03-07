@@ -1,7 +1,3 @@
 {% for t in types %}
-{% if type.id == type_selected %}
-<li>{{type.name}}</li>
-{% else %}
-<li><a href="{{ type.get_absolute_url }}">{{type.name}}</a></li>
-{% endif %}
+<li><a href="{{ t.get_absolute_url }}">{{t.type}}</a></li>
 {% endfor %}
