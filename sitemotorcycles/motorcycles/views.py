@@ -23,7 +23,7 @@ class ShowMotorcycle(DataMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        return self.get_mixin_context(context, title=context['post'].brand)
+        return self.get_mixin_context(context, title=context['publication'].brand)
 
     def get_object(self, queryset=None):
         return get_object_or_404(Motorcycles.objects.all(), slug=self.kwargs[self.slug_url_kwarg])

@@ -2,10 +2,10 @@
 
 
 {% block content %}
-<h1>{{post.name}}</h1>
+<h1>{{publication.brand}} {{publication.bike_model}}</h1>
 
 {% if post.photo %}
-<p><img src="{{post.photo.url}}"></p>
+<p><img src="{{publication.photo.url}}"></p>
 {% endif %}
-{{post.description|linebreaks}}
+{{publication.description|linebreaks}}
 {% endblock %}
