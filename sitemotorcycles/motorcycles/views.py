@@ -8,7 +8,7 @@ from .utils import DataMixin
 
 class MotorcyclesHome(DataMixin, ListView):
     template_name = 'motorcycles/index.html'
-    context_object_name = 'posts'
+    context_object_name = 'publications'
     title_page = 'Главная страница'
     kind_selected = 0
 
@@ -19,7 +19,7 @@ class MotorcyclesHome(DataMixin, ListView):
 class ShowMotorcycle(DataMixin, DetailView):
     template_name = 'motorcycles/post.html'
     slug_url_kwarg = 'post_slug'
-    context_object_name = 'post'
+    context_object_name = 'publication'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -31,7 +31,7 @@ class ShowMotorcycle(DataMixin, DetailView):
 
 class ShowEngineType(DataMixin, ListView):
     template_name = 'motorcycles/index.html'
-    context_object_name = 'posts'
+    context_object_name = 'publications'
     allow_empty = False
 
     def get_context_data(self, **kwargs):
@@ -45,7 +45,7 @@ class ShowEngineType(DataMixin, ListView):
 
 class MotorcycleKind(DataMixin, ListView):
     template_name = 'motorcycles/index.html'
-    context_object_name = 'posts'
+    context_object_name = 'publications'
     allow_empty = False
 
     def get_queryset(self):
@@ -53,7 +53,7 @@ class MotorcycleKind(DataMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        kind = context['posts'][0].kind
+        kind = context['publications'][0].kind
         return self.get_mixin_context(context,
                                       title='Класс - ' + kind.name,
                                       kind__slug=kind.pk,
