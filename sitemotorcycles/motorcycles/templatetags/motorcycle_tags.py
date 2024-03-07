@@ -17,10 +17,9 @@ def show_top_menu():
 @register.inclusion_tag('motorcycles/list_kinds.html')
 def show_kind(kind_selected=0):
     kinds = KindOfMotorcycle.objects.all()
-    return {'kinds': kinds, } #'kind_selected': kind_selected
+    return {'kinds': kinds, 'kind_selected': kind_selected}
 
 
 @register.inclusion_tag('motorcycles/list_eng_type.html')
-def show_all_types(type_selected=0):
-    types = EngineType.objects.all()
-    return {'types': types, } #'type_selected': type_selected
+def show_all_types():
+    return {'types': EngineType.objects.annotate(total=Count("types")).filter(total__gt=0)}

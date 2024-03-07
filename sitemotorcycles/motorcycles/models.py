@@ -54,15 +54,12 @@ class Motorcycles(models.Model):
     )
 
     def __str__(self):
-        return self.model
+        return self.bike_model
 
     class Meta:
         verbose_name = "Мотоцикл"
         verbose_name_plural = "Мотоциклы"
-        # ordering = ['time_create']
-        # indexes = [
-        #     models.Index(fields=['time_create'])
-        # ]
+
 
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})

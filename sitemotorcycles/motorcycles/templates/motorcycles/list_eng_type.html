@@ -1,3 +1,9 @@
-{% for t in types %}
-<li><a href="{{ t.get_absolute_url }}">{{t.type}}</a></li>
-{% endfor %}
+
+{% if types %}
+    <p>Тип двигателя:</p>
+    <ul class="tags-list">
+        {% for t in types %}
+        <li><a href="{{t.get_absolute_url}}">{{t.type}}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}

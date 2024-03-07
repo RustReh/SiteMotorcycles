@@ -3,15 +3,22 @@
 
 
 {% block content %}
-<ul >
-	{% for p in posts %}
-			<li><div c>
-	<p class="first">Категория: {{p.kind.name}}</p>
-    </div>
-				<h2>{{p.brand}} {{ p.bike_model }}</h2>
 
-			<div ></div>
-			<p c><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+<ul class="list-articles">
+	{% for p in posts %}
+			<li><div class="article-panel">
+	<p class="first">Класс: {{p.kind.name}} </p>
+    </div>
+{% if p.photo %}
+		<p><img class="img-article-left thumb" src="{{p.photo.url}}"></p>
+{% endif %}
+
+				<h2>{{p.brand}} {{ p.bike_model }}</h2>
+    {% autoescape off %}
+	{{p.description|linebreaks|truncatewords:40}}
+    {% endautoescape %}
+			<div class="clear"></div>
+			<p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
 			</li>
 	{% endfor %}
 </ul>
