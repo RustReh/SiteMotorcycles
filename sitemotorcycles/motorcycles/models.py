@@ -78,7 +78,7 @@ class KindOfMotorcycle(models.Model):
         db_index=True
     )
 
-    photo = models.ImageField(
+    photo_kind = models.ImageField(
         upload_to="motorcyclesphoto/%Y/%m/%d/",
         default=None,
         verbose_name='Фото',
@@ -108,7 +108,7 @@ class EngineType(models.Model):
         db_index=True
     )
 
-    photo = models.ImageField(
+    photo_engine = models.ImageField(
         upload_to="motorcyclesphoto/%Y/%m/%d/",
         default=None,
         verbose_name='Фото',

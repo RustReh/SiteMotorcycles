@@ -15,7 +15,7 @@ class MotorcyclesHome(DataMixin, ListView):
     kind_selected = 0
 
     def get_queryset(self):
-        return Motorcycles.objects.all()
+        return Motorcycles.objects.all().select_related('kind')
 
 
 class ShowMotorcycle(DataMixin, DetailView):
