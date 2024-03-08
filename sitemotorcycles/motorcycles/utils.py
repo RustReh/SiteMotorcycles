@@ -1,6 +1,3 @@
-from .models import Menu
-
-menu = Menu.objects.all()
 
 
 class DataMixin:

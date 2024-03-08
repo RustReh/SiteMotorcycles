@@ -1,10 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+
+
+{% block content %}
+
+<ul class="list-articles">
+	{% for p in fav_publications %}
+			<li><div class="article-panel">
+	<p class="first">Класс: {{p.kind.name}} </p>
+    </div>
+{% if p.photo %}
+		<p><img class="img-article-left thumb" src="{{p.photo.url}}"></p>
+{% endif %}
+
+				<h2>{{p.brand}} {{ p.bike_model }}</h2>
+    {% autoescape off %}
+	{{p.description|linebreaks|truncatewords:40}}
+    {% endautoescape %}
+			<div class="clear"></div>
+			<p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+			</li>
+	{% endfor %}
+</ul>
+{% endblock %}

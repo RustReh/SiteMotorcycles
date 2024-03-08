@@ -7,4 +7,5 @@ urlpatterns = [
     path('kind/<slug:kind_slug>/', views.MotorcycleKind.as_view(), name='kind'),
     path('type/<slug:type_slug>/', views.ShowEngineType.as_view(), name='type'),
     path('favorite/', views.Favorite.as_view(), name='favorite'),
+    path('addpublication/', views.AddPublication.as_view(), name='addpublication'),
 ]

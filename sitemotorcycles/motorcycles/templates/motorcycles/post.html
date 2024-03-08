@@ -4,7 +4,7 @@
 {% block content %}
 <h1>{{publication.brand}} {{publication.bike_model}}</h1>
 
-{% if post.photo %}
+{% if publication.photo %}
 <p><img src="{{publication.photo.url}}"></p>
 {% endif %}
 {{publication.description|linebreaks}}

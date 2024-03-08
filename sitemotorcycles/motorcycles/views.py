@@ -1,7 +1,9 @@
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 
+from .forms import AddPublicationForm
 from .models import Motorcycles, EngineType
 from .utils import DataMixin
 
@@ -60,8 +62,21 @@ class MotorcycleKind(DataMixin, ListView):
                                       )
 
 
-class Favorite(ListView):
-    pass
+class Favorite(DataMixin, ListView):
+    template_name = 'motorcycles/favorite_bikes.html'
+    context_object_name = 'fav_publications'
+    title_page = 'Избрынные мотоциклы'
+    kind_selected = 0
+
+    def get_queryset(self):
+        pass
+
+
+class AddPublication(DataMixin, CreateView):
+    form_class = AddPublicationForm
+    template_name = 'motorcycles/add_publication.html'
+    success_url = reverse_lazy('home')
+    title_page = 'Добавление публикации'
 
 
 def page_not_found(request, exception):
