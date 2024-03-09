@@ -1,7 +1,7 @@
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .forms import AddPublicationForm
 from .models import Motorcycles, EngineType
@@ -77,6 +77,14 @@ class AddPublication(DataMixin, CreateView):
     template_name = 'motorcycles/add_publication.html'
     success_url = reverse_lazy('home')
     title_page = 'Добавление публикации'
+
+
+class UpdatePublication(DataMixin, UpdateView):
+    model = Motorcycles
+    fields = ['brand', 'bike_model', 'photo', 'description', 'kind', 'type']
+    template_name = 'motorcycles/add_publication.html'
+    success_url = reverse_lazy('home')
+    title_page = 'Редактирование статьи'
 
 
 def page_not_found(request, exception):

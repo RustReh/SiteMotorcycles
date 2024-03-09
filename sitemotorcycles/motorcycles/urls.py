@@ -8,4 +8,5 @@ urlpatterns = [
     path('type/<slug:type_slug>/', views.ShowEngineType.as_view(), name='type'),
     path('favorite/', views.Favorite.as_view(), name='favorite'),
     path('addpublication/', views.AddPublication.as_view(), name='addpublication'),
+    path('edit/<slug:slug>/', views.UpdatePublication.as_view(), name='edit'),
 ]
