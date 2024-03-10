@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .forms import AddPublicationForm
-from .models import Motorcycles, EngineType
+from .models import Motorcycles, EngineType, Menu
 from .utils import DataMixin
 
 
@@ -65,7 +65,7 @@ class MotorcycleKind(DataMixin, ListView):
 class Favorite(DataMixin, ListView):
     template_name = 'motorcycles/favorite_bikes.html'
     context_object_name = 'fav_publications'
-    title_page = 'Избрынные мотоциклы'
+    title_page = 'Избранные мотоциклы'
     kind_selected = 0
 
     def get_queryset(self):
