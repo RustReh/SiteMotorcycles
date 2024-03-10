@@ -169,3 +169,6 @@ class Menu(models.Model):
         ordering = ('position',)
         verbose_name = 'Пункт меню'
         verbose_name_plural = 'Пункты меню'
+
+    def get_absolute_url(self):
+        return reverse(f'{self.url}')
