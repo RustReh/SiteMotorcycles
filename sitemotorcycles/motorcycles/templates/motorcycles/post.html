@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>{{publication.brand}} {{publication.bike_model}}</h1>
+
+{% if publication.photo %}
+<p><img class="img-article-left" src="{{ publication.photo.url }}" width="900" height="600"></p>
+{% endif %}
+{{publication.description|linebreaks}}
+{% endblock %}

@@ -49,23 +49,20 @@ class Motorcycles(models.Model):
     type = models.ForeignKey(
         'EngineType',
         on_delete=models.PROTECT,
-        # related_name='type',
+        related_name='types',
         verbose_name='Тип двигателя'
     )
 
     def __str__(self):
-        return self.model
+        return self.bike_model
 
     class Meta:
         verbose_name = "Мотоцикл"
         verbose_name_plural = "Мотоциклы"
-        # ordering = ['time_create']
-        # indexes = [
-        #     models.Index(fields=['time_create'])
-        # ]
 
-    # def get_absolute_url(self):
-    #     return reverse('post', kwargs={'post_slug': self.slug})
+
+    def get_absolute_url(self):
+        return reverse('post', kwargs={'post_slug': self.slug})
 
 
 class KindOfMotorcycle(models.Model):
@@ -81,7 +78,7 @@ class KindOfMotorcycle(models.Model):
         db_index=True
     )
 
-    photo = models.ImageField(
+    photo_kind = models.ImageField(
         upload_to="motorcyclesphoto/%Y/%m/%d/",
         default=None,
         verbose_name='Фото',
@@ -95,8 +92,8 @@ class KindOfMotorcycle(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_absolute_url(self):
-    #     return reverse('kind', kwargs={'kind_slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('kind', kwargs={'kind_slug': self.slug})
 
 
 class EngineType(models.Model):
@@ -111,7 +108,7 @@ class EngineType(models.Model):
         db_index=True
     )
 
-    photo = models.ImageField(
+    photo_engine = models.ImageField(
         upload_to="motorcyclesphoto/%Y/%m/%d/",
         default=None,
         verbose_name='Фото',
@@ -119,11 +116,13 @@ class EngineType(models.Model):
         null=True,
     )
 
+    class Meta:
+        verbose_name = "Тмп двигателя"
     def __str__(self):
         return self.type
 
-    # def get_absolute_url(self):
-    #     return reverse('type', kwargs={'type_slug': self.slug})
+    def get_absolute_url(self):
+        return reverse('type', kwargs={'type_slug': self.slug})
 
 
 class Favorite(models.Model):

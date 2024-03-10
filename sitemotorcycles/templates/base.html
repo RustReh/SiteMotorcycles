@@ -1,10 +1,45 @@
+{% load static %}
+{% load motorcycle_tags %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+	<title>{{title}}</title>
 </head>
 <body>
+<table class="table-content" border=0 cellpadding="0" cellspacing="0">
+	<tr>
+<td valign="top">
+{% show_top_menu %}
+<td >
+<table class="table-content" border=0 cellpadding="0" cellspacing="0">
+<tr>
+<!-- Sidebar слева -->
+   <td valign="top" class="left-chapters">
+	<ul id="leftchapters">
+		{% if kind_selected == 0 %}
+		<li class="selected">Все классы</li>
+		{% else %}
+		<li><a href="{% url 'home' %}">Все классы</a></li>
+		{% endif %}
 
-</body>
-</html>
+		{% show_kind kind_selected %}
+
+
+		{% show_all_types %}
+
+	</ul>
+<td >
+	<!-- Хлебные крошки -->
+	{% block breadcrumbs %}
+	{% endblock %}
+
+<!-- Блок контента -->
+	<div>
+{% block content %}
+{% endblock %}
+	</div>
+<!-- Конец блока контента -->
+
+{% block navigation %}
+{% endblock %}
