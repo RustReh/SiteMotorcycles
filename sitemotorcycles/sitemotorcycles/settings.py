@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'motorcycles.apps.MotorcyclesConfig',
     'users.apps.UsersConfig',
+    'social_django',
     'django_extensions',
 ]
 
@@ -147,11 +148,27 @@ STATICFILES_DIRS = [(os.path.join(BASE_DIR, 'static'))]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'users:login'
+
 
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.vk.VKOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "djangocourse@yandex.ru"
+EMAIL_HOST_PASSWORD = "bnufhkwcripaunvu"
+EMAIL_USE_SSL = True
 
 AUTH_USER_MODEL = 'users.User'
+
+DEFAULT_USER_IMAGE = MEDIA_URL + 'users/default.jpg'

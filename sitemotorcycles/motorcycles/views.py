@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .forms import AddPublicationForm
-from .models import Motorcycles, EngineType, Menu
+from .models import Motorcycles, EngineType
 from .utils import DataMixin
 
 

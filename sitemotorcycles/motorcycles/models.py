@@ -145,7 +145,7 @@ class Favorite(models.Model):
         verbose_name_plural = "Списки избранного"
 
     def __str__(self):
-        return (f'self.user')
+        return f'{self.user.username} | {self.motorcycles.slug}'
 
 
 class Menu(models.Model):
