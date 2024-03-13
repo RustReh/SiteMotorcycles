@@ -3,8 +3,9 @@ from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic.edit import FormMixin
 
-from .forms import AddPublicationForm
+from .forms import AddPublicationForm, AddToFavForm
 from .models import Motorcycles, EngineType, Favorite
 from .utils import DataMixin
 
@@ -19,10 +20,26 @@ class MotorcyclesHome(DataMixin, ListView):
         return Motorcycles.objects.all().select_related('kind')
 
 
-class ShowMotorcycle(DataMixin, DetailView):
+class ShowMotorcycle(DataMixin, FormMixin, DetailView):
     template_name = 'motorcycles/post.html'
+    form_class = AddToFavForm
     slug_url_kwarg = 'post_slug'
     context_object_name = 'publication'
+
+    def post(self, request, *args, **kwargs):
+        bike_pk = self.kwargs['pk']
+        user = request.user
+
+        if Favorite.objects.filter(user=user, motorcycles__pk=bike_pk).exists():
+            pass
+        else:
+            # Recipe is not in favorites, add it
+            motorcycles = Motorcycles.objects.get(pk=bike_pk)
+            favorite = Favorite(user=user, motorcycles=motorcycles)
+            favorite.save()
+
+        return HttpResponseRedirect(Motorcycles.get_absolute_url(self))
+        # return redirect('recipe_details', pk=recipe_pk, slug=recipe.slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
