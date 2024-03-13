@@ -1,10 +1,11 @@
-from django.http import HttpResponseNotFound
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .forms import AddPublicationForm
-from .models import Motorcycles, EngineType
+from .models import Motorcycles, EngineType, Favorite
 from .utils import DataMixin
 
 
@@ -62,7 +63,7 @@ class MotorcycleKind(DataMixin, ListView):
                                       )
 
 
-class Favorite(DataMixin, ListView):
+class FavoriteBikes(LoginRequiredMixin, DataMixin, ListView):
     template_name = 'motorcycles/favorite_bikes.html'
     context_object_name = 'fav_publications'
     title_page = 'Избранные мотоциклы'
@@ -72,7 +73,7 @@ class Favorite(DataMixin, ListView):
         pass
 
 
-class AddPublication(DataMixin, CreateView):
+class AddPublication(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPublicationForm
     template_name = 'motorcycles/add_publication.html'
     success_url = reverse_lazy('home')
@@ -89,3 +90,4 @@ class UpdatePublication(DataMixin, UpdateView):
 
 def page_not_found(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
+

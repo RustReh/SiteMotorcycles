@@ -155,7 +155,6 @@ LOGIN_URL = 'users:login'
 
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.github.GithubOAuth2',
-    'social_core.backends.vk.VKOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -164,10 +163,10 @@ SOCIAL_AUTH_JSONFIELD_ENABLED = True
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = "smtp.yandex.ru"
-EMAIL_PORT = 465
-EMAIL_HOST_USER = "djangocourse@yandex.ru"
-EMAIL_HOST_PASSWORD = "bnufhkwcripaunvu"
-EMAIL_USE_SSL = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "hyshikryst@yandex.ru"
+EMAIL_HOST_PASSWORD = "ghujljchekkszaqt"
+EMAIL_USE_TLS = True
 
 AUTH_USER_MODEL = 'users.User'
 
