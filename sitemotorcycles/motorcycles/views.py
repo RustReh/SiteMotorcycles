@@ -28,12 +28,17 @@ class ShowMotorcycle(DataMixin, FormMixin, DetailView):
     context_object_name = 'publication'
 
     def post(self, request, *args, **kwargs):
-        # bike_pk = self.kwargs['pk']
         user = request.user
-        motorcycles = Motorcycles.objects.get(slug=self.slug)
-        favorite = Favorite(user=user, motorcycles=motorcycles)
-        favorite.save()
-        return redirect('home')
+        motorcycles = self.get_object()
+
+        if Favorite.objects.filter(user=user, motorcycles=motorcycles).exists():
+            f = Favorite.objects.filter(motorcycles=motorcycles)
+            f.delete()
+        else:
+            favorite = Favorite(user=user, motorcycles=motorcycles)
+            favorite.save()
+
+        return redirect('post',self.kwargs[self.slug_url_kwarg])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

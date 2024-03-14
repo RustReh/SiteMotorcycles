@@ -52,3 +52,7 @@ class AddToFavForm(forms.ModelForm):
     class Meta:
         model = Favorite
         fields = '__all__'
+        widgets = {
+            'user': forms.HiddenInput(),
+            'motorcycles': forms.HiddenInput(),
+        }
