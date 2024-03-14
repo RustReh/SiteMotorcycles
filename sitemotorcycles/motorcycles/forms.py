@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.forms import widgets
@@ -38,6 +39,16 @@ class AddPublicationForm(forms.ModelForm):
 
 
 class AddToFavForm(forms.ModelForm):
+    # user = forms.ModelChoiceField(
+    #     queryset=get_user_model().objects.all(),
+    #     label='User',
+    # )
+    #
+    # motorcycles = forms.ModelChoiceField(
+    #     queryset=Motorcycles.objects.all(),
+    #     label='Bike',
+    # )
+
     class Meta:
         model = Favorite
         fields = '__all__'

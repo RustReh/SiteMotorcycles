@@ -1,6 +1,7 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotFound, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import FormMixin
@@ -27,19 +28,12 @@ class ShowMotorcycle(DataMixin, FormMixin, DetailView):
     context_object_name = 'publication'
 
     def post(self, request, *args, **kwargs):
-        bike_pk = self.kwargs['pk']
+        # bike_pk = self.kwargs['pk']
         user = request.user
-
-        if Favorite.objects.filter(user=user, motorcycles__pk=bike_pk).exists():
-            pass
-        else:
-            # Recipe is not in favorites, add it
-            motorcycles = Motorcycles.objects.get(pk=bike_pk)
-            favorite = Favorite(user=user, motorcycles=motorcycles)
-            favorite.save()
-
-        return HttpResponseRedirect(Motorcycles.get_absolute_url(self))
-        # return redirect('recipe_details', pk=recipe_pk, slug=recipe.slug)
+        motorcycles = Motorcycles.objects.get(slug=self.slug)
+        favorite = Favorite(user=user, motorcycles=motorcycles)
+        favorite.save()
+        return redirect('home')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,6 +41,15 @@ class ShowMotorcycle(DataMixin, FormMixin, DetailView):
 
     def get_object(self, queryset=None):
         return get_object_or_404(Motorcycles.objects.all(), slug=self.kwargs[self.slug_url_kwarg])
+
+    def get_user_pk(self):
+        return self.request.user.pk
+
+    def get_initial(self):
+        initial = super(ShowMotorcycle, self).get_initial()
+        initial['motorcycles'] = self.object  # selected bike
+        initial['user'] = self.get_user_pk()
+        return initial
 
 
 class ShowEngineType(DataMixin, ListView):
