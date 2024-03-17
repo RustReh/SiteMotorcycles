@@ -129,7 +129,7 @@ class Favorite(models.Model):
     user = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
-        related_name='favorites',
+        related_name='fav_user',
         verbose_name='Пользователь'
     )
 
@@ -137,7 +137,8 @@ class Favorite(models.Model):
         Motorcycles,
         on_delete=models.CASCADE,
         related_name='favorites',
-        verbose_name='Мотоциклы'
+        verbose_name='Мотоциклы',
+        # unique=True,
     )
 
     class Meta:
@@ -145,7 +146,7 @@ class Favorite(models.Model):
         verbose_name_plural = "Списки избранного"
 
     def __str__(self):
-        return (f'self.user')
+        return f'{self.user.username} | {self.motorcycles.slug}'
 
 
 class Menu(models.Model):
@@ -169,3 +170,6 @@ class Menu(models.Model):
         ordering = ('position',)
         verbose_name = 'Пункт меню'
         verbose_name_plural = 'Пункты меню'
+
+    def get_absolute_url(self):
+        return reverse(f'{self.url}')

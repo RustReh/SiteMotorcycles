@@ -1,9 +1,10 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.forms import widgets
 
-from .models import KindOfMotorcycle, EngineType, Motorcycles
+from .models import KindOfMotorcycle, EngineType, Motorcycles, Favorite
 
 
 class AddPublicationForm(forms.ModelForm):
@@ -35,3 +36,14 @@ class AddPublicationForm(forms.ModelForm):
             raise ValidationError("Длина превышает 50 символов")
 
         return bike_model
+
+
+class AddToFavForm(forms.ModelForm):
+
+    class Meta:
+        model = Favorite
+        fields = ()
+        widgets = {
+            'user': forms.HiddenInput(),
+            'motorcycles': forms.HiddenInput(),
+        }

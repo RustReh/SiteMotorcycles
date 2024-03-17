@@ -1,10 +1,13 @@
-from django.http import HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic.edit import FormMixin
 
-from .forms import AddPublicationForm
-from .models import Motorcycles, EngineType, Menu
+from .forms import AddPublicationForm, AddToFavForm
+from .models import Motorcycles, EngineType, Favorite
 from .utils import DataMixin
 
 
@@ -18,17 +21,45 @@ class MotorcyclesHome(DataMixin, ListView):
         return Motorcycles.objects.all().select_related('kind')
 
 
-class ShowMotorcycle(DataMixin, DetailView):
+class ShowMotorcycle(DataMixin, FormMixin, DetailView):
     template_name = 'motorcycles/post.html'
+    form_class = AddToFavForm
     slug_url_kwarg = 'post_slug'
     context_object_name = 'publication'
+    # is_fav = {'1': True}
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        motorcycles = self.get_object()
+        # print(self.is_fav)
+
+        if Favorite.objects.filter(user=user, motorcycles=motorcycles).exists():
+            f = Favorite.objects.filter(motorcycles=motorcycles)
+            f.delete()
+            # self.is_fav['0'] = False
+        else:
+            favorite = Favorite(user=user, motorcycles=motorcycles)
+            favorite.save()
+            # self.is_fav['1'] = True
+
+        return redirect('post', self.kwargs[self.slug_url_kwarg])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # context.update(self.is_fav)
         return self.get_mixin_context(context, title=context['publication'].brand)
 
     def get_object(self, queryset=None):
         return get_object_or_404(Motorcycles.objects.all(), slug=self.kwargs[self.slug_url_kwarg])
+
+    def get_user_pk(self):
+        return self.request.user.pk
+
+    def get_initial(self):
+        initial = super(ShowMotorcycle, self).get_initial()
+        initial['motorcycles'] = self.object  # selected bike
+        initial['user'] = self.get_user_pk()
+        return initial
 
 
 class ShowEngineType(DataMixin, ListView):
@@ -62,17 +93,22 @@ class MotorcycleKind(DataMixin, ListView):
                                       )
 
 
-class Favorite(DataMixin, ListView):
+class FavoriteBikes(LoginRequiredMixin, DataMixin, ListView):
     template_name = 'motorcycles/favorite_bikes.html'
     context_object_name = 'fav_publications'
     title_page = 'Избранные мотоциклы'
     kind_selected = 0
 
+    def get_user_pk(self):
+        return self.request.user.pk
+
     def get_queryset(self):
-        pass
+        return Favorite.objects.filter(user=self.get_user_pk())
 
 
-class AddPublication(DataMixin, CreateView):
+
+
+class AddPublication(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPublicationForm
     template_name = 'motorcycles/add_publication.html'
     success_url = reverse_lazy('home')
@@ -89,3 +125,4 @@ class UpdatePublication(DataMixin, UpdateView):
 
 def page_not_found(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
+
