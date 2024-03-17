@@ -39,19 +39,10 @@ class AddPublicationForm(forms.ModelForm):
 
 
 class AddToFavForm(forms.ModelForm):
-    # user = forms.ModelChoiceField(
-    #     queryset=get_user_model().objects.all(),
-    #     label='User',
-    # )
-    #
-    # motorcycles = forms.ModelChoiceField(
-    #     queryset=Motorcycles.objects.all(),
-    #     label='Bike',
-    # )
 
     class Meta:
         model = Favorite
-        fields = '__all__'
+        fields = ()
         widgets = {
             'user': forms.HiddenInput(),
             'motorcycles': forms.HiddenInput(),

@@ -7,18 +7,22 @@
 <ul class="list-articles">
 	{% for p in fav_publications %}
 			<li><div class="article-panel">
-	<p class="first">Класс: {{p.kind.name}} </p>
+	<p class="first">Класс: {{p.motorcycles.kind.name}} </p>
+
+	<li>Тип двигателя:</li>
+    <li>{{p.motorcycles.type}}</a></li>
+
     </div>
-{% if p.photo %}
-		<p><img class="img-article-left thumb" src="{{p.photo.url}}"></p>
+{% if p.motorcycles.photo %}
+		<p><img class="img-article-left thumb" src="{{p.motorcycles.photo.url}}" width="300" height="200"></p>
 {% endif %}
 
-				<h2>{{p.brand}} {{ p.bike_model }}</h2>
+				<h2>{{p.motorcycles.brand}} {{ p.motorcycles.bike_model }}</h2>
     {% autoescape off %}
-	{{p.description|linebreaks|truncatewords:40}}
+	{{p.motorcycles.description|linebreaks|truncatewords:40}}
     {% endautoescape %}
 			<div class="clear"></div>
-			<p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
+			<p class="link-read-post"><a href="{{ p.motorcycles.get_absolute_url }}">Читать пост</a></p>
 			</li>
 	{% endfor %}
 </ul>

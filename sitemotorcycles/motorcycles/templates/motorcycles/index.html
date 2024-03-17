@@ -8,6 +8,10 @@
 	{% for p in publications %}
 			<li><div class="article-panel">
 	<p class="first">Класс: {{p.kind.name}} </p>
+
+    <li>Тип двигателя:</li>
+    <li>{{p.type}}</a></li>
+
     </div>
 {% if p.photo %}
 		<p><img class="img-article-left thumb" src="{{ p.photo.url }}" width="300" height="200"></p>

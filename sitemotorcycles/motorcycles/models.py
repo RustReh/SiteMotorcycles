@@ -129,7 +129,7 @@ class Favorite(models.Model):
     user = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
-        related_name='favorites',
+        related_name='fav_user',
         verbose_name='Пользователь'
     )
 

@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
 
+{% block breadcrumbs %}
+
+
+
+<ul>
+    <li>Тип двигателя:</li>
+    <li>{{publication.type}}</a></li>
+</ul>
+
+{% endblock %}
 
 {% block content %}
 <h1>{{publication.brand}} {{publication.bike_model}}</h1>
@@ -12,14 +22,11 @@
 {% csrf_token %}
     <form action="" method="post">
     {% csrf_token %}
-    <div class="form-error">{{ form.non_field_errors }}</div>
-    {% for f in form %}
-    <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
-    <div class="form-error">{{ f.errors }}</div>
-    {% endfor %}
+        {% if publication.is_fav %}
+        <p><button type="submit">Удалить из избранного</button></p>
+        {% else %}
         <p><button type="submit">Добавить в избранное</button></p>
-
-
+        {% endif %}
 </form>
 {% endif %}
 {% endblock %}
