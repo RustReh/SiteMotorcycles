@@ -22,7 +22,7 @@ class AddPublicationForm(forms.ModelForm):
 
     class Meta:
         model = Motorcycles
-        fields = ['photo', 'brand', 'bike_model', 'slug', 'description', 'kind', 'type']
+        fields = ['photo', 'brand', 'bike_model', 'slug', 'description', 'kind', 'type', 'is_published']
         widgets = {
             'brand': forms.TextInput(),
             'bike_model': forms.TextInput(),

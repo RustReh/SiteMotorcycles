@@ -4,7 +4,16 @@ from django.db import models
 from django.urls import reverse
 
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_published=Motorcycles.Status.PUBLISHED)
+
+
 class Motorcycles(models.Model):
+    class Status(models.IntegerChoices):
+        DRAFT = 0, 'В очереди'
+        PUBLISHED = 1, 'Опубликовано'
+
     brand = models.CharField(
         max_length=100,
         verbose_name='Марка мотоцикла',
@@ -53,12 +62,31 @@ class Motorcycles(models.Model):
         verbose_name='Тип двигателя'
     )
 
+    is_published = models.BooleanField(
+        choices=tuple(map(lambda x: (bool(x[0]), x[1]), Status.choices)),
+        default=Status.DRAFT,
+        verbose_name="Статус"
+    )
+    time_create = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Время создания"
+    )
+
+    time_update = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Время изменения"
+    )
+
+    objects = models.Manager()
+    published = PublishedManager()
+
     def __str__(self):
         return self.bike_model
 
     class Meta:
         verbose_name = "Мотоцикл"
         verbose_name_plural = "Мотоциклы"
+        ordering = ['time_create']
 
 
     def get_absolute_url(self):
@@ -88,6 +116,7 @@ class KindOfMotorcycle(models.Model):
 
     class Meta:
         verbose_name = "Класс мотоцикла"
+        verbose_name_plural = "Классы мотоциклов"
 
     def __str__(self):
         return self.name
@@ -117,7 +146,9 @@ class EngineType(models.Model):
     )
 
     class Meta:
-        verbose_name = "Тмп двигателя"
+        verbose_name = "Тип двигателя"
+        verbose_name_plural = "Типы двигателя"
+
     def __str__(self):
         return self.type
 

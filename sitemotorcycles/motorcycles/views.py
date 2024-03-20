@@ -18,7 +18,7 @@ class MotorcyclesHome(DataMixin, ListView):
     kind_selected = 0
 
     def get_queryset(self):
-        return Motorcycles.objects.all().select_related('kind')
+        return Motorcycles.published.all().select_related('kind')
 
 
 class ShowMotorcycle(DataMixin, FormMixin, DetailView):
@@ -50,7 +50,7 @@ class ShowMotorcycle(DataMixin, FormMixin, DetailView):
         return self.get_mixin_context(context, title=context['publication'].brand)
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Motorcycles.objects.all(), slug=self.kwargs[self.slug_url_kwarg])
+        return get_object_or_404(Motorcycles.published, slug=self.kwargs[self.slug_url_kwarg])
 
     def get_user_pk(self):
         return self.request.user.pk
@@ -73,7 +73,7 @@ class ShowEngineType(DataMixin, ListView):
         return self.get_mixin_context(context, title='Тег: ' + types.type)
 
     def get_queryset(self):
-        return Motorcycles.objects.all().filter(type__slug=self.kwargs['type_slug']).select_related('kind')
+        return Motorcycles.published.filter(type__slug=self.kwargs['type_slug']).select_related('kind')
 
 
 class MotorcycleKind(DataMixin, ListView):
@@ -82,7 +82,7 @@ class MotorcycleKind(DataMixin, ListView):
     allow_empty = False
 
     def get_queryset(self):
-        return Motorcycles.objects.all().filter(kind__slug=self.kwargs['kind_slug']).select_related('kind')
+        return Motorcycles.published.filter(kind__slug=self.kwargs['kind_slug']).select_related('kind')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -104,8 +104,6 @@ class FavoriteBikes(LoginRequiredMixin, DataMixin, ListView):
 
     def get_queryset(self):
         return Favorite.objects.filter(user=self.get_user_pk())
-
-
 
 
 class AddPublication(LoginRequiredMixin, DataMixin, CreateView):
