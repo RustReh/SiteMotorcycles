@@ -21,7 +21,7 @@ class MotorcyclesAdmin(admin.ModelAdmin):
     @admin.display(description="Изображение", ordering='content')
     def post_photo(self, motorcycles: Motorcycles):
         if motorcycles.photo:
-            return mark_safe(f"<img src='{motorcycles.photo.url}' width=50>")
+            return mark_safe(f"<img src='{motorcycles.photo.url}' width=100>")
         return "Без фото"
 
     @admin.action(description="Опубликовать выбранные записи")
@@ -37,12 +37,26 @@ class MotorcyclesAdmin(admin.ModelAdmin):
 
 @admin.register(KindOfMotorcycle)
 class KindAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'photo_kind')
-    list_display_links = ('id', 'name', 'photo_kind')
+    fields = ['kind_photo', 'name', 'photo_kind']
+    readonly_fields = ['kind_photo']
+    list_display = ('kind_photo', 'id', 'name')
+    list_display_links = ('id', 'name')
     ordering = ['id']
+
+    def kind_photo(self, kind: KindOfMotorcycle):
+        if kind.photo_kind:
+            return mark_safe(f"<img src='{kind.photo_kind.url}' width=100>")
+        return "Без фото"
 
 
 @admin.register(EngineType)
 class TypeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'type', 'photo_engine')
-    list_display_links = ('id', 'type', 'photo_engine')
+    fields = ['eng_photo', 'type', 'photo_engine']
+    list_display = ('photo_engine', 'id', 'type')
+    readonly_fields = ['eng_photo']
+    list_display_links = ('id', 'type')
+
+    def eng_photo(self, eng: EngineType):
+        if eng.photo_engine:
+            return mark_safe(f"<img src='{eng.photo_engine.url}' width=100>")
+        return "Без фото"
