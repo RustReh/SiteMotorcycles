@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -106,19 +106,21 @@ class FavoriteBikes(LoginRequiredMixin, DataMixin, ListView):
         return Favorite.objects.filter(user=self.get_user_pk())
 
 
-class AddPublication(LoginRequiredMixin, DataMixin, CreateView):
+class AddPublication(PermissionRequiredMixin, LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPublicationForm
     template_name = 'motorcycles/add_publication.html'
     success_url = reverse_lazy('home')
     title_page = 'Добавление публикации'
+    permission_required = 'motorcycles.add_motorcycles'
 
 
-class UpdatePublication(DataMixin, UpdateView):
+class UpdatePublication(PermissionRequiredMixin, DataMixin, UpdateView):
     model = Motorcycles
-    fields = ['brand', 'bike_model', 'photo', 'description', 'kind', 'type']
+    fields = ['brand', 'bike_model', 'photo', 'is_published', 'description', 'kind', 'type']
     template_name = 'motorcycles/add_publication.html'
     success_url = reverse_lazy('home')
     title_page = 'Редактирование статьи'
+    permission_required = 'motorcycles.change_motorcycles'
 
 
 def page_not_found(request, exception):

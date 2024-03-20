@@ -19,7 +19,6 @@
 {% endif %}
 {{publication.description|linebreaks}}
 {% if user.is_authenticated %}
-{% csrf_token %}
     <form action="" method="post">
     {% csrf_token %}
         {% if publication.is_fav %}
@@ -28,5 +27,9 @@
         <p><button type="submit">Добавить в избранное</button></p>
         {% endif %}
 </form>
+{% endif %}
+
+{% if perms.motorcycles.change_motorcycles %}
+<p><a href="{% url 'edit' publication.slug %}">Редактировать</a></p>
 {% endif %}
 {% endblock %}
