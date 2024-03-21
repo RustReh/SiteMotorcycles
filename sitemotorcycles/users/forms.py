@@ -21,15 +21,15 @@ class LoginUserForm(AuthenticationForm):
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(
         label="Логин",
-        widget=forms.TextInput(attrs={'class': 'form-input'})
+        widget=forms.TextInput()
     )
     password1 = forms.CharField(
         label="Пароль",
-        widget=forms.PasswordInput(attrs={'class': 'form-input'})
+        widget=forms.PasswordInput()
     )
     password2 = forms.CharField(
         label="Повтор пароля",
-        widget=forms.PasswordInput(attrs={'class': 'form-input'})
+        widget=forms.PasswordInput()
     )
 
     class Meta:
@@ -40,8 +40,8 @@ class RegisterUserForm(UserCreationForm):
             'first_name': "Ник",
         }
         widgets = {
-            'email': forms.TextInput(attrs={'class': 'form-input'}),
-            'first_name': forms.TextInput(attrs={'class': 'form-input'}),
+            'email': forms.TextInput(),
+            'first_name': forms.TextInput(),
         }
 
     def clean_email(self):
@@ -55,14 +55,14 @@ class ProfileUserForm(forms.ModelForm):
     username = forms.CharField(
         disabled=True,
         label='Логин',
-        widget=forms.TextInput(attrs={'class': 'form-input'})
+        widget=forms.TextInput()
     )
 
     email = forms.CharField(
         disabled=True,
         required=False,
         label='E-mail',
-        widget=forms.TextInput(attrs={'class': 'form-input'})
+        widget=forms.TextInput()
     )
 
     class Meta:
@@ -79,15 +79,15 @@ class ProfileUserForm(forms.ModelForm):
 class UserPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(
         label="Старый пароль",
-        widget=forms.PasswordInput(attrs={'class': 'form-input'})
+        widget=forms.PasswordInput()
     )
 
     new_password1 = forms.CharField(
         label="Новый пароль",
-        widget=forms.PasswordInput(attrs={'class': 'form-input'})
+        widget=forms.PasswordInput()
     )
 
     new_password2 = forms.CharField(
         label="Подтверждение пароля",
-        widget=forms.PasswordInput(attrs={'class': 'form-input'})
+        widget=forms.PasswordInput()
     )
