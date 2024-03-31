@@ -1,6 +1,6 @@
 from django import template
+from django.contrib.auth import get_user_model
 from django.db.models import Count
-
 from ..models import KindOfMotorcycle, EngineType, Menu
 
 register = template.Library()
@@ -9,6 +9,7 @@ register = template.Library()
 @register.inclusion_tag('motorcycles/menu_top.html')
 def show_top_menu():
     menu_items = Menu.objects.all()
+    user = get_user_model()
     return {
         "menu_items": menu_items,
     }

@@ -174,6 +174,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "hyshikryst@yandex.ru"
 EMAIL_HOST_PASSWORD = "ghujljchekkszaqt"
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "hyshikryst@yandex.ru"
 
 AUTH_USER_MODEL = 'users.User'
 

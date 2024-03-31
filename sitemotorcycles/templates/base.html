@@ -5,28 +5,34 @@
 <html>
 <head>
 	<title>{{title}}</title>
+	<link type="text/css" href="{% static 'motorcycles/css/style.css' %}" rel="stylesheet" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="shortcut icon" href="{% static 'motorcycles/images/logo.png' %}" type="image/x-icon"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <table class="table-content" border=0 cellpadding="0" cellspacing="0">
-	<tr>
-<td valign="top">
-	<div class="header">
+<tr><td valign="top">
+<div class="header">
+<ul id="mainmenu" class="mainmenu">
+<li class="logo"><a href="{% url 'home' %}"><div class="logo"></div></a></li>
 {% show_top_menu %}
 {% if user.is_authenticated %}
 <li class="last"><a href="{% url 'users:profile' %}">{{user.username}}</a> |
 	<form method="post" action="{% url 'users:logout' %}">
     {% csrf_token %}
     <button type="submit">Выйти</button>
-</form>
+    </form>
 {% else %}
 	<li class="last"><a href="{% url 'users:login' %}">Войти</a> | <a href="{% url 'users:register' %}">Регистрация</a></li>
 {% endif %}
-		</div>
-<td >
-<table class="table-content" border=0 cellpadding="0" cellspacing="0">
+</ul>
+</div>
+
+<table class="table-content" border=0 cellpadding="1" cellspacing="1">
 <tr>
 <!-- Sidebar слева -->
-   <td valign="top" class="left-chapters">
+   <td valign="left" class="left-chapters">
 	<ul id="leftchapters">
 		{% if kind_selected == 0 %}
 		<li class="selected">Все классы</li>
@@ -36,11 +42,11 @@
 
 		{% show_kind kind_selected %}
 
-
 		{% show_all_types %}
 
 	</ul>
-<td >
+</td>
+	<td valign="top" class="content">
 	<!-- Хлебные крошки -->
 	{% block breadcrumbs %}
 	{% endblock %}
@@ -54,4 +60,7 @@
 
 {% block navigation %}
 {% endblock %}
-
+</td></tr></table>
+</td></tr>
+</body>
+</html>

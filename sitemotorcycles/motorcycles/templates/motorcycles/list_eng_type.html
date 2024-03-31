@@ -2,10 +2,10 @@
     <p>Тип двигателя:</p>
     <ul class="tags-list">
         {% for t in types %}
-        <li><a href="{{t.get_absolute_url}}">{{t.type}}</a></li>
         {% if t.photo_engine %}
-		<p><img class="img-article-left thumb" src="{{ t.photo_engine.url }}" width="150" height="100"></p>
+		<li><img class="img-article-left thumb" src="{{ t.photo_engine.url }}" width="120" height="80"></li>
         {% endif %}
+        <li><a href="{{t.get_absolute_url}}">{{t.type}}</a></li>
         {% endfor %}
     </ul>
 {% endif %}
