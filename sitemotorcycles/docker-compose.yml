@@ -1,16 +1,16 @@
 version: "3.9"
 
+
 services:
-  redis:
-    image: redis:alpine
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 50M
-        reservations:
-          cpus: '0.25'
-          memory: 20M
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+
   sm_postgres:
     image: postgres:15
     container_name: sm_postgres
@@ -36,3 +36,5 @@ services:
 volumes:
   static_volume:
   media_volume:
+  cache:
+    driver: local
