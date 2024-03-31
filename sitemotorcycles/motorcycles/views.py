@@ -26,27 +26,23 @@ class ShowMotorcycle(DataMixin, FormMixin, DetailView):
     form_class = AddToFavForm
     slug_url_kwarg = 'post_slug'
     context_object_name = 'publication'
-    # is_fav = {'1': True}
 
     def post(self, request, *args, **kwargs):
         user = request.user
         motorcycles = self.get_object()
-        # print(self.is_fav)
 
         if Favorite.objects.filter(user=user, motorcycles=motorcycles).exists():
             f = Favorite.objects.filter(motorcycles=motorcycles)
             f.delete()
-            # self.is_fav['0'] = False
+
         else:
             favorite = Favorite(user=user, motorcycles=motorcycles)
             favorite.save()
-            # self.is_fav['1'] = True
 
         return redirect('post', self.kwargs[self.slug_url_kwarg])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context.update(self.is_fav)
         return self.get_mixin_context(context, title=context['publication'].brand)
 
     def get_object(self, queryset=None):
