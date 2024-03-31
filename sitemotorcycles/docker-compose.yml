@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:alpine
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
+        reservations:
+          cpus: '0.25'
+          memory: 20M
+  sm_postgres:
+    image: postgres:15
+    container_name: sm_postgres
+    volumes:
+      - ~/.pg/pg_data/sm:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  sitemotorcycles:
+      image: sm_docker:latest
+      container_name: sm_django
+      depends_on:
+        - sm_postgres
+      network_mode: host
+      volumes:
+        - static_volume:/sm/static
+        - media_volume:/sm/media
+      env_file:
+        - .env
+      command: >
+          bash -c " ./manage.py migrate
+          && python manage.py runserver "
+volumes:
+  static_volume:
+  media_volume:

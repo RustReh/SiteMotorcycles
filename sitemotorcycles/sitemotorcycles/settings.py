@@ -15,6 +15,7 @@ from pathlib import Path
 # Import for Django-environ
 import os
 import environ
+import trust
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -144,6 +145,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_DIRS = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -166,6 +169,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SOCIAL_AUTH_JSONFIELD_ENABLED = True
+
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
