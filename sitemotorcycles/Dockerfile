@@ -19,10 +19,10 @@ WORKDIR /sm
 
 RUN mkdir /sm/static && mkdir /sm/media && chown -R sm:sm /sm && chmod 755 /sm
 
-COPY --chown=Rustem:sm . .
+COPY --chown=rustem:sm . .
 
 RUN pip install -r requirements.txt
 
 USER sm
 
-CMD ["python manage.py -runserver","-b","0.0.0.0:8001","sitemotorcycles.wsgi:application"]
+CMD ["python manage.py -runserver","sitemotorcycles.wsgi:application"]
