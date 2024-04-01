@@ -30,7 +30,7 @@ services:
         - .env
       command: >
           bash -c " ./manage.py migrate
-          && python manage.py runserver "
+          && ./manage.py runserver "
 volumes:
   static_volume:
   media_volume:

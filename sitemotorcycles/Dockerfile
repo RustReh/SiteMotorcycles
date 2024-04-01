@@ -25,4 +25,4 @@ RUN pip install -r requirements.txt
 
 USER sm
 
-CMD ["python manage.py -runserver","sitemotorcycles.wsgi:application"]
+CMD ["python manage.py -runserver", "sitemotorcycles.wsgi:application"]
