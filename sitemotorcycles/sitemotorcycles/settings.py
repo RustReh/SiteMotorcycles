@@ -15,7 +15,6 @@ from pathlib import Path
 # Import for Django-environ
 import os
 import environ
-import trust
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -53,6 +52,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'social_django',
     'django_extensions',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -104,7 +104,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        "LOCATION": "redis://127.0.0.1:6379/1",
     }
 }
 
@@ -199,3 +199,9 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_CACHE_BACKEND = 'django-cache'
