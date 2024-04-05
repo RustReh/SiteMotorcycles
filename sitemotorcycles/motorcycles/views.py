@@ -8,6 +8,7 @@ from django.views.generic.edit import FormMixin
 
 from .forms import AddPublicationForm, AddToFavForm
 from .models import Motorcycles, EngineType, Favorite
+from .tasks import send_mails
 from .utils import DataMixin
 
 
@@ -38,6 +39,7 @@ class ShowMotorcycle(DataMixin, FormMixin, DetailView):
         else:
             favorite = Favorite(user=user, motorcycles=motorcycles)
             favorite.save()
+            send_mails(user, favorite.motorcycles)
 
         return redirect('post', self.kwargs[self.slug_url_kwarg])
 
