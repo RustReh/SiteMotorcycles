@@ -88,7 +88,6 @@ class Motorcycles(models.Model):
         verbose_name_plural = "Мотоциклы"
         ordering = ['time_create']
 
-
     def get_absolute_url(self):
         return reverse('post', kwargs={'post_slug': self.slug})
 
