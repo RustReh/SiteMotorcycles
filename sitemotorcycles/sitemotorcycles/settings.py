@@ -9,11 +9,11 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+# Import for Django-environ
+import os
 import sys
 from pathlib import Path
 
-# Import for Django-environ
-import os
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_extensions',
     'django_celery_results',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

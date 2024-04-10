@@ -1,8 +1,5 @@
 from django import forms
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.core.validators import MinLengthValidator, MaxLengthValidator
-from django.forms import widgets
 
 from .models import KindOfMotorcycle, EngineType, Motorcycles, Favorite
 

@@ -1,13 +1,14 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.http import HttpResponseNotFound, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import FormMixin
+from rest_framework import viewsets, generics
 
 from .forms import AddPublicationForm, AddToFavForm
 from .models import Motorcycles, EngineType, Favorite
+from .permissions import IsEditorOrReadOnly
+from .serializers import BikeSerializer
 from .tasks import send_mails
 from .utils import DataMixin
 
@@ -121,6 +122,19 @@ class UpdatePublication(PermissionRequiredMixin, DataMixin, UpdateView):
     permission_required = 'motorcycles.change_motorcycles'
 
 
-def page_not_found(request, exception):
-    return HttpResponseNotFound("<h1>Страница не найдена</h1>")
+# DRF classes here
+class MotorcyclesViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Motorcycles.published.all()
+    serializer_class = BikeSerializer
 
+
+class MotorcyclesAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Motorcycles.objects.all()
+    serializer_class = BikeSerializer
+    permission_classes = (IsEditorOrReadOnly, )
+
+
+class MotorcyclesAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Motorcycles.objects.all()
+    serializer_class = BikeSerializer
+    permission_classes = (IsEditorOrReadOnly, )
