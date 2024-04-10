@@ -1,6 +1,7 @@
-from django.urls import path, re_path, register_converter
-from . import views
+from django.urls import path
 from django.views.decorators.cache import cache_page
+
+from . import views
 
 urlpatterns = [
     path('', cache_page(30)(views.MotorcyclesHome.as_view()), name='home'),  # http://127.0.0.1:8000
