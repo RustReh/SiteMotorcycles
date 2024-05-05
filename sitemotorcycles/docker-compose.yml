@@ -1,38 +1,124 @@
 
 services:
-  cache:
+  redis:
     image: redis:6.2-alpine
+    container_name: redis
     restart: always
     ports:
-      - '6379:6379'
+      - '6633:6379'
     command: redis-server --save 20 1 --loglevel warning
     volumes:
-      - cache:/data
+      - redis:/data
+    networks:
+      - heritage-network
 
   sm_postgres:
     image: postgres:15
     container_name: sm_postgres
+    networks:
+      - heritage-network
     volumes:
-      - ~/.pg/pg_data/sm:/var/lib/postgresql/data
-    env_file:
-      - .env
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - 5436:5436
+    environment:
+      - POSTGRES_USER=rust
+      - POSTGRES_DB=rustdb
+      - POSTGRES_PASSWORD=1111
+      - POSTGRES_HOST_AUTH_METHOD=trust
 
   sitemotorcycles:
-      image: sm_docker:latest
-      container_name: sm_django
-      depends_on:
-        - sm_postgres
-      network_mode: host
-      volumes:
-        - static_volume:/sm/static
-        - media_volume:/sm/media
-      env_file:
-        - .env
-      command: >
-          bash -c " ./manage.py migrate
-          && ./manage.py runserver "
+    image: sm_docker:latest
+    container_name: sm_docker
+    ports:
+      - 8000:8000
+    depends_on:
+      - sm_postgres
+      - redis
+    volumes:
+      - static_volume:/sitemotorcycles/static
+      - media_volume:/sitemotorcycles/media
+    networks:
+      - heritage-network
+    links:
+      - sm_postgres:sm_postgres
+      - redis:redis
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+    command: >
+      bash -c " ./manage.py collectstatic --noinput && ./manage.py makemigrations && ./manage.py migrate
+      && ./manage.py runserver 0.0.0.0:8000 "
 volumes:
+  pgdata:
   static_volume:
   media_volume:
-  cache:
+  redis:
     driver: local
+networks:
+  heritage-network:
+    driver: bridge
+
+#services:
+#  redis:
+#    image: redis:6.2-alpine
+#    container_name: redis
+#    restart: always
+#    ports:
+#      - '6379:6379'
+#    command: redis-server --save 20 1 --loglevel warning
+#    volumes:
+#      - redis:/data
+#    networks:
+#      - heritage-network
+#
+#  sm_postgres:
+#    image: postgres:15
+#    restart: always
+#    ports:
+#      - 5436:5436
+#    container_name: sm_postgres
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_DB=rust_db
+#      - POSTGRES_PASSWORD=1111
+#      - POSTGRES_HOST_AUTH_METHOD=trust
+#    networks:
+#      - heritage-network
+#    volumes:
+#      - ./pgdata:/var/lib/postgresql/data
+#
+#  sitemotorcycles:
+#      image: sm_docker:latest
+#      container_name: sm_docker
+#      ports:
+#        - 8000:8000
+#      depends_on:
+#        - sm_postgres
+#        - redis
+#      volumes:
+#        - static_volume:/sitemotorcycles/static
+#        - media_volume:/sitemotorcycles/media
+#      networks:
+#        - heritage-network
+#      links:
+#        - sm_postgres:sm_postgres
+#        - redis:redis
+#      env_file:
+#        - .env
+#      environment:
+#        - REDIS_HOST=redis
+#      command: >
+#          bash -c " ./manage.py collectstatic --noinput && ./manage.py makemigrations && ./manage.py migrate
+#          && ./manage.py runserver 0.0.0.0:8000 "
+#
+#volumes:
+#  pgdata:
+#  static_volume:
+#  media_volume:
+#  redis:
+#    driver: local
+#networks:
+#  heritage-network:
+#    driver: bridge

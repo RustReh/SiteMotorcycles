@@ -11,13 +11,13 @@ ENV PYTHONUNBUFFERED 1
 RUN pip install --upgrade pip
 
 RUN apt update && apt -qy install gcc libjpeg-dev libxslt-dev \
-    libpq-dev libmariadb-dev libmariadb-dev-compat gettext cron openssh-client flake8 locales vim
+    libpq-dev libmariadb-dev gettext cron openssh-client flake8 locales vim
 
 RUN useradd -rms /bin/bash sm && chmod 777 /opt /run
 
-WORKDIR /sm
+WORKDIR /sitemotorcycles
 
-RUN mkdir /sm/static && mkdir /sm/media && chown -R sm:sm /sm && chmod 755 /sm
+RUN mkdir /sitemotorcycles/static && mkdir /sitemotorcycles/media && chown -R sm:sm /sitemotorcycles && chmod 755 /sitemotorcycles
 
 COPY --chown=rustem:sm . .
 
@@ -25,4 +25,4 @@ RUN pip install -r requirements.txt
 
 USER sm
 
-CMD ["python manage.py -runserver", "sitemotorcycles.wsgi:application"]
+CMD ["gunicorn", "-b", "0.0.0.0:8001", "sitemotorcycles.wsgi:application"]
