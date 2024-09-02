@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.safestring import mark_safe
 
-from .models import Motorcycles, KindOfMotorcycle, EngineType
+from .models import Motorcycles, KindOfMotorcycle, EngineType, Menu
 
 
 @admin.register(Motorcycles)
@@ -37,9 +37,9 @@ class MotorcyclesAdmin(admin.ModelAdmin):
 
 @admin.register(KindOfMotorcycle)
 class KindAdmin(admin.ModelAdmin):
-    fields = ['kind_photo', 'name', 'photo_kind']
+    fields = ['kind_photo', 'name', 'photo_kind', 'slug']
     readonly_fields = ['kind_photo']
-    list_display = ('kind_photo', 'id', 'name')
+    list_display = ('kind_photo', 'id', 'name', 'slug')
     list_display_links = ('id', 'name')
     ordering = ['id']
 
@@ -51,8 +51,8 @@ class KindAdmin(admin.ModelAdmin):
 
 @admin.register(EngineType)
 class TypeAdmin(admin.ModelAdmin):
-    fields = ['eng_photo', 'type', 'photo_engine']
-    list_display = ('photo_engine', 'id', 'type')
+    fields = ['eng_photo', 'type', 'photo_engine', 'slug']
+    list_display = ('photo_engine', 'id', 'type', 'slug')
     readonly_fields = ['eng_photo']
     list_display_links = ('id', 'type')
 
@@ -60,3 +60,10 @@ class TypeAdmin(admin.ModelAdmin):
         if eng.photo_engine:
             return mark_safe(f"<img src='{eng.photo_engine.url}' width=100>")
         return "Без фото"
+
+
+@admin.register(Menu)
+class MenuAdmin(admin.ModelAdmin):
+    fields = ['title', 'url', 'position']
+    list_display = ('title', 'url', 'position')
+

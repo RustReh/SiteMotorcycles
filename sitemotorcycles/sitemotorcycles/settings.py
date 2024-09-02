@@ -36,7 +36,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['localhost', '0.0.0.0']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -97,7 +97,7 @@ if TESTING==False:
             'NAME': env('DB_NAME'),
             'USER': env('DB_USER'),
             'PASSWORD': env('DB_PASSWORD'),
-            'HOST': 'sm_postgres',
+            'HOST': 'localhost',
             'PORT': env('DB_PORT'),
         }
     }
@@ -112,7 +112,7 @@ else:
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://redis/1",
+        "LOCATION": "redis://127.0.0.1:6379/1",
     }
 }
 
@@ -208,7 +208,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
 )
 
-CELERY_BROKER_URL = 'redis://redis/0'
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 CELERY_RESULT_BACKEND = 'django-db'
 
