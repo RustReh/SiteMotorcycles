@@ -1,15 +1,20 @@
+import csv
+from io import StringIO
+
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import FormMixin
 from rest_framework import viewsets, generics
+from rest_framework.permissions import IsAuthenticated
+from django.forms.models import model_to_dict
 
-from .forms import AddPublicationForm, AddToFavForm
-from .models import Motorcycles, EngineType, Favorite
+from .forms import AddPublicationForm, AddToFavForm, AddToOrderForm
+from .models import Motorcycles, EngineType, Favorite, Order
 from .permissions import IsEditorOrReadOnly
-from .serializers import BikeSerializer
-from .tasks import send_mails
+from .serializers import BikeSerializer, OrderSerializer
+from .tasks import send_mails, send_notification
 from .utils import DataMixin
 
 
@@ -122,6 +127,39 @@ class UpdatePublication(PermissionRequiredMixin, DataMixin, UpdateView):
     permission_required = 'motorcycles.change_motorcycles'
 
 
+class AddToOrdersView(LoginRequiredMixin, DataMixin, CreateView):
+    form_class = AddToOrderForm
+    template_name = 'motorcycles/create_order.html'
+    success_url = reverse_lazy('home')
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        order = Order.objects.create(user=user,
+                                     needed_quantity=self.request.POST.get('needed_quantity'),
+                                     motorcycle=Motorcycles.objects.get(pk=self.request.POST.get('motorcycle'))
+                                     )
+        order.save()
+        return redirect('home')
+
+    def get_user_pk(self):
+        return self.request.user.pk
+
+    def get_initial(self):
+        initial = super(AddToOrdersView, self).get_initial()
+        initial['user'] = self.get_user_pk()
+        return initial
+
+class MyOrdersView(DataMixin, ListView):
+    template_name = 'motorcycles/orders.html'
+    context_object_name = 'orders'
+    title_page = 'My Orders'
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user.id)
+
+
+
+
 # DRF classes here
 class MotorcyclesViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Motorcycles.published.all()
@@ -138,3 +176,20 @@ class MotorcyclesAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Motorcycles.objects.all()
     serializer_class = BikeSerializer
     permission_classes = (IsEditorOrReadOnly, )
+
+
+class OrderCreateAPIView(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+        send_notification(user=self.request.user, order=self.request.data)
+
+
+class OrderViewAPIView(generics.ListAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = (IsAuthenticated,)
+

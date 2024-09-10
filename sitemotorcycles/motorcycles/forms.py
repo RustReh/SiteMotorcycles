@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import KindOfMotorcycle, EngineType, Motorcycles, Favorite
+from .models import KindOfMotorcycle, EngineType, Motorcycles, Favorite, Order
 
 
 class AddPublicationForm(forms.ModelForm):
@@ -34,6 +34,11 @@ class AddPublicationForm(forms.ModelForm):
 
         return bike_model
 
+class AddToOrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ('needed_quantity', 'motorcycle')
+
 
 class AddToFavForm(forms.ModelForm):
 
@@ -44,3 +49,4 @@ class AddToFavForm(forms.ModelForm):
             'user': forms.HiddenInput(),
             'motorcycles': forms.HiddenInput(),
         }
+

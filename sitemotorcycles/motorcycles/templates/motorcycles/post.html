@@ -7,6 +7,11 @@
 <ul>
     <li>Тип двигателя:</li>
     <li>{{publication.type}}</a></li>
+    <li>Количество:</li>
+    <li>{{publication.quantity.quantity}}</a></li>
+	<li>Цена:</li>
+    <li>{{publication.quantity.price}}</a></li>
+
 </ul>
 
 {% endblock %}
@@ -26,7 +31,15 @@
         {% else %}
         <p><button type="submit">Добавить в избранное</button></p>
         {% endif %}
-</form>
+    </form>
+    <form action="" method="post">
+    {% csrf_token %}
+        {% if publication.is_fav %}
+        <p><button type="submit">Удалить из избранного</button></p>
+        {% else %}
+        <p><button type="submit">Добавить в избранное</button></p>
+        {% endif %}
+    </form>
 {% endif %}
 
 {% if perms.motorcycles.change_motorcycles %}

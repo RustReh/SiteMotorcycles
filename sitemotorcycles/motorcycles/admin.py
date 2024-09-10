@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.utils.safestring import mark_safe
 
-from .models import Motorcycles, KindOfMotorcycle, EngineType, Menu
+from .models import Motorcycles, KindOfMotorcycle, EngineType, Menu, Order
 
 
 @admin.register(Motorcycles)
@@ -67,3 +67,8 @@ class MenuAdmin(admin.ModelAdmin):
     fields = ['title', 'url', 'position']
     list_display = ('title', 'url', 'position')
 
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    fields = ('user', 'needed_quantity', 'motorcycle')
+    readonly_fields = ['time_create']

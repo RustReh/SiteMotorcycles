@@ -77,6 +77,15 @@ class Motorcycles(models.Model):
         verbose_name="Время изменения"
     )
 
+    quantity = models.ForeignKey(
+        'QuantityPrice',
+        on_delete=models.PROTECT,
+        related_name='quantity_prices',
+        verbose_name='Количество',
+        blank=True,
+        null=True,
+    )
+
     objects = models.Manager()
     published = PublishedManager()
 
@@ -202,3 +211,54 @@ class Menu(models.Model):
 
     def get_absolute_url(self):
         return reverse(f'{self.url}')
+
+
+class QuantityPrice(models.Model):
+    price = models.DecimalField(
+        verbose_name='Цеена',
+        max_digits=10,
+        decimal_places=2
+    )
+
+    quantity = models.IntegerField(
+        verbose_name='Количество',
+        default=1
+    )
+
+    def __str__(self):
+        return f'{self.motorcycles.brand} | {self.motorcycles.bike_model}'
+
+
+class Order(models.Model):
+    class Status:
+        NEW = 0, 'Sozdan'
+        FINISHED = 1, 'Finish'
+
+    user = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.PROTECT,
+        related_name='orders',
+        verbose_name='Пользователь',
+        blank=True, null=True,
+    )
+
+    needed_quantity = models.IntegerField(
+        verbose_name='Количество',
+        default=1
+    )
+
+    motorcycle = models.ForeignKey(
+        Motorcycles,
+        on_delete=models.PROTECT,
+        related_name='orders',
+        verbose_name='Мотоцикл'
+    )
+
+    time_create = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Время создания'
+    )
+
+    def __str__(self):
+        return f'{self.needed_quantity} | {self.motorcycle} | {self.time_create}'
+

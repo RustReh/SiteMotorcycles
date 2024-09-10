@@ -11,4 +11,6 @@ urlpatterns = [
     path('favorite/', views.FavoriteBikes.as_view(), name='favorite'),
     path('addpublication/', views.AddPublication.as_view(), name='addpublication'),
     path('edit/<slug:slug>/', views.UpdatePublication.as_view(), name='edit'),
+    path('createorder/', views.AddToOrdersView.as_view(), name='create_order'),
+    path('myorders/', views.MyOrdersView.as_view(), name='myorders'),
 ]

@@ -1,35 +1,17 @@
 {% extends 'base.html' %}
 
-
-
 {% block content %}
 
 <ul class="list-articles">
-	{% for p in publications %}
+	{% for p in orders %}
 			<li><div class="article-panel">
-	<p class="first">Класс: {{p.kind.name}} </p>
+	<p class="first">Класс: {{p.motorcycle.brand}} {{p.motorcycle.bike_model}} </p>
 
-    <li>Тип двигателя:</li>
-    <li>{{p.type}}</a></li>
-	<li>Количество:</li>
-    <li>{{p.quantity.quantity}}</a></li>
-	<li>Цена:</li>
-    <li>{{p.quantity.price}}</a></li>
-
-
-    </div>
-{% if p.photo %}
-		<p><img class="img-article-left thumb" src="{{ p.photo.url }}" width="300" height="200"></p>
-{% endif %}
-
-				<h2>{{p.brand}} {{ p.bike_model }}</h2>
-    {% autoescape off %}
-	{{p.description|linebreaks|truncatewords:40}}
-    {% endautoescape %}
-			<div class="clear"></div>
-			<p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читать пост</a></p>
-			</li>
-	{% endfor %}
+    <li>Needed quantity:</li>
+    <li>{{p.needed_quantity}}</a></li>
+    <li>Time:</li>
+    <li>{{p.time_create}}</a></li>
+    {% endfor %}
 </ul>
 {% endblock %}
 
@@ -63,5 +45,3 @@
 </nav>
 {% endif %}
 {% endblock %}
-
-

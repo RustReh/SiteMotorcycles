@@ -31,6 +31,9 @@ urlpatterns = [
                   path('api/v1/', include(router.urls)),
                   path('api/v1/bike/<int:pk>/', MotorcyclesAPIUpdate.as_view()),
                   path('api/v1/bikedelete/<int:pk>/', MotorcyclesAPIDestroy.as_view()),
+                  path('api/v1/createorder/', OrderCreateAPIView.as_view()),
+                  path('api/v1/createorder/<int:pk>/', OrderCreateAPIView.as_view()),
+                  path('api/v1/order/', OrderViewAPIView.as_view()),
                   path('users/', include('users.urls', namespace="users")),
                   path('social-auth/', include('social_django.urls', namespace='social')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
