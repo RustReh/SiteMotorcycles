@@ -2,8 +2,6 @@ networks:
   dev:
 
 
-
-
 volumes:
   pgdata:
   static_volume:
@@ -53,7 +51,7 @@ services:
       - static_volume:/sitemotorcycles/static
       - media_volume:/sitemotorcycles/media
     networks:
-      dev
+      - dev
     env_file:
       - .env
     environment:
