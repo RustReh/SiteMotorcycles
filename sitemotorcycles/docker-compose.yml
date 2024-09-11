@@ -66,7 +66,7 @@ services:
   nginx:
     build:
       dockerfile: ./Dockerfile
-      context: ./docker/nginx/
+      context: ./nginx/
     container_name: sm_nginx
     image: sm_nginx
     volumes:
@@ -75,7 +75,7 @@ services:
     depends_on:
       - sitemotorcycles
     ports:
-      - "80:80"
+      - "85:80"
     networks:
       - dev
 
