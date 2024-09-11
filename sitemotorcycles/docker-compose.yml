@@ -59,26 +59,25 @@ services:
       - POSTGRES_DB=rustdb
       - POSTGRES_PASSWORD=1111
       - REDIS_HOST=redis
-
     command: >
       bash -c "./manage.py collectstatic --noinput && ./manage.py makemigrations && ./manage.py migrate
       && ./manage.py runserver 0.0.0.0:8000 "
       
-    nginx:
-      build:
-        dockerfile: ./Dockerfile
-        context: ./docker/nginx/
-      container_name: sm_nginx
-      image: sm_nginx
-      volumes:
-        - static_volume:/sitemotorcycles/static
-        - media_volume:/sitemotorcycles/media
-      depends_on:
-        - sitemotorcycles
-      ports:
-        - "80:80"
-      networks:
-        dev:
+  nginx:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./docker/nginx/
+    container_name: sm_nginx
+    image: sm_nginx
+    volumes:
+      - static_volume:/sitemotorcycles/static
+      - media_volume:/sitemotorcycles/media
+    depends_on:
+      - sitemotorcycles
+    ports:
+      - "80:80"
+    networks:
+      - dev
 
 
 
