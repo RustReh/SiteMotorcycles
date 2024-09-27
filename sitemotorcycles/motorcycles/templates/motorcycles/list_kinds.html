@@ -1,0 +1,12 @@
+{% for k in kinds %}
+{% if k.photo_kind %}
+<li><img class="img-article-left thumb" src="{{ k.photo_kind.url }}" align="left" width="120" height="80"></li>
+{% endif %}
+{% if k.id == kind_selected %}
+<li class="selected">{{k.name}}</li>
+{% else %}
+<li><a href="{{ k.get_absolute_url }}">{{k.name}}</a></li>
+
+{% endif %}
+{% endfor %}
+
